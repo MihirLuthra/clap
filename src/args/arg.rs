@@ -1,10 +1,10 @@
-#[cfg(any(target_os = "windows", target_arch = "wasm32"))]
+#[cfg(any(target_os = "windows", target_arch = "wasm32", target_env = "sgx"))]
 use osstringext::OsStrExt3;
 #[cfg(feature = "yaml")]
 use std::collections::BTreeMap;
 use std::env;
 use std::ffi::{OsStr, OsString};
-#[cfg(not(any(target_os = "windows", target_arch = "wasm32")))]
+#[cfg(not(any(target_os = "windows", target_arch = "wasm32", target_env = "sgx")))]
 use std::os::unix::ffi::OsStrExt;
 use std::rc::Rc;
 

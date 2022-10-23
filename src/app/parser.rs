@@ -1,5 +1,5 @@
 // Std
-#[cfg(all(feature = "debug", any(target_os = "windows", target_arch = "wasm32")))]
+#[cfg(all(feature = "debug", any(target_os = "windows", target_arch = "wasm32", target_env = "sgx")))]
 use osstringext::OsStrExt3;
 use std::cell::Cell;
 use std::ffi::{OsStr, OsString};
@@ -9,7 +9,7 @@ use std::io::{self, BufWriter, Write};
 use std::iter::Peekable;
 #[cfg(all(
     feature = "debug",
-    not(any(target_os = "windows", target_arch = "wasm32"))
+    not(any(target_os = "windows", target_arch = "wasm32", target_env = "sgx"))
 ))]
 use std::os::unix::ffi::OsStrExt;
 use std::path::PathBuf;
@@ -690,9 +690,9 @@ where
 
     // Checks if the arg matches a subcommand name, or any of it's aliases (if defined)
     fn possible_subcommand(&self, arg_os: &OsStr) -> (bool, Option<&str>) {
-        #[cfg(any(target_os = "windows", target_arch = "wasm32"))]
+        #[cfg(any(target_os = "windows", target_arch = "wasm32", target_env = "sgx"))]
         use osstringext::OsStrExt3;
-        #[cfg(not(any(target_os = "windows", target_arch = "wasm32")))]
+        #[cfg(not(any(target_os = "windows", target_arch = "wasm32", target_env = "sgx")))]
         use std::os::unix::ffi::OsStrExt;
         debugln!("Parser::possible_subcommand: arg={:?}", arg_os);
         fn starts(h: &str, n: &OsStr) -> bool {

@@ -1,10 +1,10 @@
 use std::ffi::OsStr;
-#[cfg(not(any(target_os = "windows", target_arch = "wasm32")))]
+#[cfg(not(any(target_os = "windows", target_arch = "wasm32", target_env = "sgx")))]
 use std::os::unix::ffi::OsStrExt;
-#[cfg(any(target_os = "windows", target_arch = "wasm32"))]
+#[cfg(any(target_os = "windows", target_arch = "wasm32", target_env = "sgx"))]
 use INVALID_UTF8;
 
-#[cfg(any(target_os = "windows", target_arch = "wasm32"))]
+#[cfg(any(target_os = "windows", target_arch = "wasm32", target_env = "sgx"))]
 pub trait OsStrExt3 {
     fn from_bytes(b: &[u8]) -> &Self;
     fn as_bytes(&self) -> &[u8];
@@ -87,7 +87,7 @@ fn test_windows_osstr_starts_with() {
     assert!(!windows_osstr_starts_with(&invalid_unicode, b"abcd"));
 }
 
-#[cfg(any(target_os = "windows", target_arch = "wasm32"))]
+#[cfg(any(target_os = "windows", target_arch = "wasm32", target_env = "sgx"))]
 impl OsStrExt3 for OsStr {
     fn from_bytes(b: &[u8]) -> &Self {
         use std::mem;
